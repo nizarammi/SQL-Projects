@@ -1,0 +1,103 @@
+# What is the average price of products in the dataset?# 
+select product_type, round(avg(price),2) as average_price 
+from spc_data
+group by product_type; 
+
+#What is the total revenue generated from product sales?# 
+select sku,n_productsold, sum(revenue_generated) as total_revenue
+from spc_data
+group by sku,n_productsold;
+
+#What is the average availability of products?#
+select sku, round(avg(availability),2) as average_availibility 
+from spc_data
+group by sku;
+
+#Which product type has the highest and lowest price?#
+select product_type, max(price) as highest_price, min(price) as lowest_price
+from spc_data 
+group by product_type;
+
+select product_type, max(revenue_generated) as highest_revenue
+from spc_data
+group by product_type
+order by max(revenue_generated) ;
+
+
+
+
+
+Which products have the highest number of sales?
+select product_type, max(n_productsold) as highest_sales
+from spc_data
+group by product_type
+order by max(n_productsold) ;
+
+Which products have the lowest availability?
+select product_type, min(availability)
+from spc_data
+group by product_type
+order by min(availability) ;
+
+What is the average lead time for products?
+select product_type, round(avg(availability),2)
+from spc_data
+group by product_type ;
+
+What is the average order quantity?
+select product_type, round(avg(order_qte),2) as average_order_qte 
+from spc_data 
+group by product_type;
+
+Which supplier has the fastest and slowest lead time?
+select supplier_name, min(lead_time) as fast_leadtime, max(lead_time) as slow_leadtime
+from spc_data 
+group by supplier_name;
+
+
+
+#Which products have the highest defect rates?#
+select product_type,sku, round(max(defect_rates),2) as high_defectrate
+from spc_data
+group by product_type,sku
+order by max(defect_rates) desc;
+
+
+
+avg ship cost 
+select product_type, round(avg(ship_cost), 2) as average_shipcost 
+from spc_data 
+group by product_type;
+
+select ship_carrier, count(ship_carrier) as n_usage
+from spc_data
+group by ship_carrier
+order by n_usage desc;
+
+select transp_mode, count(transp_mode) as n_transm_usage
+from spc_data
+group by transp_mode
+order by n_transm_usage desc;
+
+#Which routes are the most cost-effective?# 
+SELECT distinct route, MIN(costs) AS min_cost
+FROM spc_data
+GROUP BY route
+order by min_cost asc;
+
+#What is the average manufacturing cost for products?#
+select product_type, round(avg(manuf_cost),2) as avg_manufcost 
+from spc_data 
+group by product_type;
+
+#How do transportation costs vary based on shipping carriers and modes?"
+select distinct ship_carrier, transp_mode, round(avg(costs),2) as avg_cost
+from spc_data 
+group by ship_carrier, transp_mode
+order by ship_carrier asc, avg_cost desc ;
+
+#What is the overall cost of production for each product type?# 
+select product_type, round(sum(manuf_cost),2) as cost_production
+from spc_data 
+group by product_type
+order by cost_production asc;
