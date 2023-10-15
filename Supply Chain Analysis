@@ -2,102 +2,103 @@
 --Database used : https://www.kaggle.com/datasets/harshsingh2209/supply-chain-analysis--
 --Queried using: MySQL--
 
---What is the average price of products in the dataset?--
-select product_type, round(avg(price),2) as average_price 
-from spc_data
-group by product_type; 
+--WHAT IS THE AVERAGE PRICE OF PRODUCTS IN THE DATASET?--
+SELECT PRODUCT_TYPE, ROUND(AVG(PRICE),2) AS AVERAGE_PRICE 
+FROM SPC_DATA
+GROUP BY PRODUCT_TYPE; 
 
---What is the total revenue generated from product sales?--
-select sku,n_productsold, sum(revenue_generated) as total_revenue
-from spc_data
-group by sku,n_productsold;
+--WHAT IS THE TOTAL REVENUE GENERATED FROM PRODUCT SALES?--
+SELECT SKU, N_PRODUCTSSOLD, SUM(REVENUE_GENERATED) AS TOTAL_REVENUE
+FROM SPC_DATA
+GROUP BY SKU, N_PRODUCTSSOLD;
 
---What is the average availability of products?--
-select sku, round(avg(availability),2) as average_availibility 
-from spc_data
-group by sku;
+--WHAT IS THE AVERAGE AVAILABILITY OF PRODUCTS?--
+SELECT SKU, ROUND(AVG(AVAILABILITY),2) AS AVERAGE_AVAILIBILITY 
+FROM SPC_DATA
+GROUP BY SKU;
 
---Which product type has the highest and lowest price?--
-select product_type, max(price) as highest_price, min(price) as lowest_price
-from spc_data 
-group by product_type;
+--WHICH PRODUCT TYPE HAS THE HIGHEST AND LOWEST PRICE?--
+SELECT PRODUCT_TYPE, MAX(PRICE) AS HIGHEST_PRICE, MIN(PRICE) AS LOWEST_PRICE
+FROM SPC_DATA 
+GROUP BY PRODUCT_TYPE;
 
---Which product type generates the most revenue?--
-select product_type, max(revenue_generated) as highest_revenue
-from spc_data
-group by product_type
-order by max(revenue_generated) ;
+--WHICH PRODUCT TYPE GENERATES THE MOST REVENUE?--
+SELECT PRODUCT_TYPE, MAX(REVENUE_GENERATED) AS HIGHEST_REVENUE
+FROM SPC_DATA
+GROUP BY PRODUCT_TYPE
+ORDER BY MAX(REVENUE_GENERATED);
 
---Which products have the highest number of sales?--
-select product_type, max(n_productsold) as highest_sales
-from spc_data
-group by product_type
-order by max(n_productsold) ;
+--WHICH PRODUCTS HAVE THE HIGHEST NUMBER OF SALES?--
+SELECT PRODUCT_TYPE, MAX(N_PRODUCTSSOLD) AS HIGHEST_SALES
+FROM SPC_DATA
+GROUP BY PRODUCT_TYPE
+ORDER BY MAX(N_PRODUCTSSOLD);
 
---Which products have the lowest availability?--
-select product_type, min(availability)
-from spc_data
-group by product_type
-order by min(availability) ;
+--WHICH PRODUCTS HAVE THE LOWEST AVAILABILITY?--
+SELECT PRODUCT_TYPE, MIN(AVAILABILITY)
+FROM SPC_DATA
+GROUP BY PRODUCT_TYPE
+ORDER BY MIN(AVAILABILITY);
 
---What is the average lead time for products?--
-select product_type, round(avg(availability),2)
-from spc_data
-group by product_type ;
+--WHAT IS THE AVERAGE LEAD TIME FOR PRODUCTS?--
+SELECT PRODUCT_TYPE, ROUND(AVG(AVAILABILITY),2)
+FROM SPC_DATA
+GROUP BY PRODUCT_TYPE;
 
---What is the average order quantity?--
-select product_type, round(avg(order_qte),2) as average_order_qte 
-from spc_data 
-group by product_type;
+--WHAT IS THE AVERAGE ORDER QUANTITY?--
+SELECT PRODUCT_TYPE, ROUND(AVG(ORDER_QTE),2) AS AVERAGE_ORDER_QTE 
+FROM SPC_DATA 
+GROUP BY PRODUCT_TYPE;
 
---Which supplier has the fastest and slowest lead time?--
-select supplier_name, min(lead_time) as fast_leadtime, max(lead_time) as slow_leadtime
-from spc_data 
-group by supplier_name;
+--WHICH SUPPLIER HAS THE FASTEST AND SLOWEST LEAD TIME?--
+SELECT SUPPLIER_NAME, MIN(LEAD_TIME) AS FAST_LEADTIME, MAX(LEAD_TIME) AS SLOW_LEADTIME
+FROM SPC_DATA 
+GROUP BY SUPPLIER_NAME;
 
---Which products have the highest defect rates?--
-select product_type,sku, round(max(defect_rates),2) as high_defectrate
-from spc_data
-group by product_type,sku
-order by max(defect_rates) desc;
+--WHICH PRODUCTS HAVE THE HIGHEST DEFECT RATES?--
+SELECT PRODUCT_TYPE, SKU, ROUND(MAX(DEFECT_RATES),2) AS HIGH_DEFECTRATE
+FROM SPC_DATA
+GROUP BY PRODUCT_TYPE, SKU
+ORDER BY MAX(DEFECT_RATES) DESC;
 
---What is the average shipping cost per product?--
-select sku, round(avg(ship_cost), 2) as average_shipcost 
-from spc_data 
-group by sku;
+--WHAT IS THE AVERAGE SHIPPING COST PER PRODUCT?--
+SELECT SKU, ROUND(AVG(SHIP_COST), 2) AS AVERAGE_SHIPCOST 
+FROM SPC_DATA 
+GROUP BY SKU;
 
---What are the most common shipping carriers used?--
-select ship_carrier, count(ship_carrier) as n_usage
-from spc_data
-group by ship_carrier
-order by n_usage desc;
+--WHAT ARE THE MOST COMMON SHIPPING CARRIERS USED?--
+SELECT SHIP_CARRIER, COUNT(SHIP_CARRIER) AS N_USAGE
+FROM SPC_DATA
+GROUP BY SHIP_CARRIER
+ORDER BY N_USAGE DESC;
 
---What transportation modes are frequently used?--
-select transp_mode, count(transp_mode) as n_transm_usage
-from spc_data
-group by transp_mode
-order by n_transm_usage desc;
+--WHAT TRANSPORTATION MODES ARE FREQUENTLY USED?--
+SELECT TRANSP_MODE, COUNT(TRANSP_MODE) AS N_TRANSM_USAGE
+FROM SPC_DATA
+GROUP BY TRANSP_MODE
+ORDER BY N_TRANSM_USAGE DESC;
 
---Which routes are the most cost-effective?--
-SELECT distinct route, MIN(costs) AS min_cost
-FROM spc_data
-GROUP BY route
-order by min_cost asc;
+--WHICH ROUTES ARE THE MOST COST-EFFECTIVE?--
+SELECT DISTINCT ROUTE, MIN(COSTS) AS MIN_COST
+FROM SPC_DATA
+GROUP BY ROUTE
+ORDER BY MIN_COST ASC;
 
---What is the average manufacturing cost for products?--
-select product_type, round(avg(manuf_cost),2) as avg_manufcost 
-from spc_data 
-group by product_type;
+--WHAT IS THE AVERAGE MANUFACTURING COST FOR PRODUCTS?--
+SELECT PRODUCT_TYPE, ROUND(AVG(MANUF_COST),2) AS AVG_MANUFCOST 
+FROM SPC_DATA 
+GROUP BY PRODUCT_TYPE;
 
---#How do transportation costs vary based on shipping carriers and modes?--
-select distinct ship_carrier, transp_mode, round(avg(costs),2) as avg_cost
-from spc_data 
-group by ship_carrier, transp_mode
-order by ship_carrier asc, avg_cost desc ;
+--HOW DO TRANSPORTATION COSTS VARY BASED ON SHIPPING CARRIERS AND MODES?--
+SELECT DISTINCT SHIP_CARRIER, TRANSP_MODE, ROUND(AVG(COSTS),2) AS AVG_COST
+FROM SPC_DATA 
+GROUP BY SHIP_CARRIER, TRANSP_MODE
+ORDER BY SHIP_CARRIER ASC, AVG_COST DESC ;
 
---What is the overall cost of production for each product type?--
-select product_type, round(sum(manuf_cost),2) as cost_production
-from spc_data 
-group by product_type
-order by cost_production asc;
+--WHAT IS THE OVERALL COST OF PRODUCTION FOR EACH PRODUCT TYPE?--
+SELECT PRODUCT_TYPE, ROUND(SUM(MANUF_COST),2) AS COST_PRODUCTION
+FROM SPC_DATA 
+GROUP BY PRODUCT_TYPE
+ORDER BY COST_PRODUCTION ASC;
+
 
