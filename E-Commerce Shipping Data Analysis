@@ -1,79 +1,78 @@
 Database used : https://www.kaggle.com/datasets/prachi13/customer-analytics
 Queried with : MySQL 
+--CALCULATE THE AVERAGE RATING GIVEN BY CUSTOMERS FOR EACH MODE OF SHIPMENT--
+SELECT SHIPMENT_MODE, ROUND(AVG(CUSTOMER_RATING),2) AS AVERAGE_RATING
+FROM ECOMMERCE_SHIP
+GROUP BY SHIPMENT_MODE; 
 
-#Calculate the average rating given by customers for each mode of shipment# 
-select shipment_mode, round(avg(customer_rating),2) as average_rating
-from ecommerce_ship
-group by shipment_mode; 
+--DETERMINE THE TOTAL NUMBER OF CUSTOMER CARE CALLS MADE BY CUSTOMERS FOR EACH WAREHOUSE BLOCK--
+SELECT WAREHOUSE_BLOCK, COUNT(CUSTOMER_CARE_CALLS) AS N_CARE_CALLS 
+FROM ECOMMERCE_SHIP 
+GROUP BY WAREHOUSE_BLOCK
+ORDER BY N_CARE_CALLS ASC;
 
-# Determine the total number of customer care calls made by customers for each warehouse block.#
-select warehouse_block, count(customer_care_calls) as n_care_calls 
-from ecommerce_ship 
-group by warehouse_block
-order by n_care_calls asc;
+--FIND OUT THE AVERAGE DISCOUNT OFFERED FOR DIFFERENT LEVELS OF CUSTOMER RATINGS--
+SELECT CUSTOMER_RATING, ROUND(AVG(DISCOUNT_OFFERED),2) AS AVERAGE_DISCOUNT 
+FROM ECOMMERCE_SHIP 
+GROUP BY CUSTOMER_RATING
+ORDER BY CUSTOMER_RATING ASC; 
 
-#Find out the average discount offered for different levels of customer ratings# 
-select customer_rating, round(avg(discount_offered),2) as average_discount 
-from ecommerce_ship 
-group by customer_rating
-order by customer_rating asc; 
-
-#Calculate the percentage of orders that reached on time for each mode of shipment.#
-select
-   shipment_mode,
-    sum(case when reached_on_time = 'Y' then 1 else 0 end) as on_time_shipment,
-    count(*) as total_orders,
-    (sum(case when reached_on_time = 'Y' then 1 else 0 end) / COUNT(*)) * 100 as OnTimePercentage
-from 
-    ecommerce_ship
-group by 
-  shipment_mode;
-
-#Order warehouse blocks by their on time delivery#
-select warehouse_block, count(reached_on_time) as best_delivery 
-from ecommerce_ship 
-where reached_on_time = 1 
-group by warehouse_block
-order by best_delivery desc; 
-
-#Calculate the average cost of products based on their importance level#
-select product_importance, avg(cost_of_poduct) as average_cost
-from ecommerce_ship
-group by product_importance; 
-
- #Determine the most common mode of shipment for products of different importance levels#
- select product_importance, count(shipment_mode) as most_common, shipment_mode
-from ecommerce_ship
-group by product_importance, shipment_mode
-order by most_common desc ; 
-
-#Analyze the relationship between customer ratings and the number of prior purchases.#
-SELECT 
-    prior_purchases, ROUND(AVG(customer_rating), 2) AS avg_customer_rating, 
-    COUNT(*) AS num_customers
+--CALCULATE THE PERCENTAGE OF ORDERS THAT REACHED ON TIME FOR EACH MODE OF SHIPMENT--
+SELECT
+   SHIPMENT_MODE,
+    SUM(CASE WHEN REACHED_ON_TIME = 'Y' THEN 1 ELSE 0 END) AS ON_TIME_SHIPMENT,
+    COUNT(*) AS TOTAL_ORDERS,
+    (SUM(CASE WHEN REACHED_ON_TIME = 'Y' THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS ONTIMEPERCENTAGE
 FROM 
-    ecommerce_ship 
+    ECOMMERCE_SHIP
 GROUP BY 
-    prior_purchases
+  SHIPMENT_MODE;
+
+--ORDER WAREHOUSE BLOCKS BY THEIR ON TIME DELIVERY--
+SELECT WAREHOUSE_BLOCK, COUNT(REACHED_ON_TIME) AS BEST_DELIVERY 
+FROM ECOMMERCE_SHIP 
+WHERE REACHED_ON_TIME = 1 
+GROUP BY WAREHOUSE_BLOCK
+ORDER BY BEST_DELIVERY DESC; 
+
+--CALCULATE THE AVERAGE COST OF PRODUCTS BASED ON THEIR IMPORTANCE LEVEL--
+SELECT PRODUCT_IMPORTANCE, AVG(COST_OF_PODUCT) AS AVERAGE_COST
+FROM ECOMMERCE_SHIP
+GROUP BY PRODUCT_IMPORTANCE; 
+
+--DETERMINE THE MOST COMMON MODE OF SHIPMENT FOR PRODUCTS OF DIFFERENT IMPORTANCE LEVELS--
+SELECT PRODUCT_IMPORTANCE, COUNT(SHIPMENT_MODE) AS MOST_COMMON, SHIPMENT_MODE
+FROM ECOMMERCE_SHIP
+GROUP BY PRODUCT_IMPORTANCE, SHIPMENT_MODE
+ORDER BY MOST_COMMON DESC ; 
+
+--ANALYZE THE RELATIONSHIP BETWEEN CUSTOMER RATINGS AND THE NUMBER OF PRIOR PURCHASES--
+SELECT 
+    PRIOR_PURCHASES, ROUND(AVG(CUSTOMER_RATING), 2) AS AVG_CUSTOMER_RATING, 
+    COUNT(*) AS NUM_CUSTOMERS
+FROM 
+    ECOMMERCE_SHIP 
+GROUP BY 
+    PRIOR_PURCHASES
 ORDER BY 
-    prior_purchases;
+    PRIOR_PURCHASES;
 
-#Calculate the average discount offered for products that reached on time vs. delayed shipments.#
-select avg(discount_offered) as average_discount, 
-case when reached_on_time = 1 then 'on time'
-when reached_on_time = 0 then 'delay' 
-else 'nothing' end as status
-from ecommerce_ship
-group by status; 
+--CALCULATE THE AVERAGE DISCOUNT OFFERED FOR PRODUCTS THAT REACHED ON TIME VS. DELAYED SHIPMENTS--
+SELECT AVG(DISCOUNT_OFFERED) AS AVERAGE_DISCOUNT, 
+CASE WHEN REACHED_ON_TIME = 1 THEN 'ON TIME'
+WHEN REACHED_ON_TIME = 0 THEN 'DELAY' 
+ELSE 'NOTHING' END AS STATUS
+FROM ECOMMERCE_SHIP
+GROUP BY STATUS; 
 
-#Determine the average weight of products ordered by male vs. female customers.#
-select gender,round(avg(weight_in_gms),2) as average_weight 
-from ecommerce_ship 
-group by gender;
+--DETERMINE THE AVERAGE WEIGHT OF PRODUCTS ORDERED BY MALE VS. FEMALE CUSTOMERS--
+SELECT GENDER,ROUND(AVG(WEIGHT_IN_GMS),2) AS AVERAGE_WEIGHT 
+FROM ECOMMERCE_SHIP 
+GROUP BY GENDER;
 
-#Identify the top 5 products with the highest customer ratings#
-select id, avg(customer_rating) as average_rating
-from ecommerce_ship 
-group by id 
-order by average_rating desc 
- limit 5 ;
+--IDENTIFY THE TOP 5 PRODUCTS WITH THE HIGHEST CUSTOMER RATINGS--
+SELECT ID, AVG(CUSTOMER_RATING) AS AVERAGE_RATING
+FROM ECOMMERCE_SHIP 
+GROUP BY ID 
+ORDER BY AVERAGE_RATING DESC 
+LIMIT 5 ;
